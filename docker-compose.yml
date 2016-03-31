@@ -6,12 +6,12 @@ web:
   links:
     - postgres:postgres
     - redis:redis
-  volumes:
-    - ./proqodpy:/usr/src/app
-    - ./proqodpy/static:/usr/src/app/static
-    - ./proqodpy/log:/usr/src/app/log
-    - ./proqodpy/dev:/usr/src/app/dev
-    - ./proqodpy/templates:/usr/src/app/templates
+  # volumes:
+  #   - ./proqodpy:/usr/src/app
+  #   - ./proqodpy/static:/usr/src/app/static
+  #   - ./proqodpy/log:/usr/src/app/log
+  #   - ./proqodpy/dev:/usr/src/app/dev
+  #   - ./proqodpy/templates:/usr/src/app/templates
 
   env_file: .env
   command: /usr/local/bin/gunicorn proqodpy.wsgi:application -w 2 -b :8000 --reload

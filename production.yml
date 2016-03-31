@@ -1,13 +1,13 @@
 web:
   restart: always
-  build: ./web
+  build: ./proqodpy
   expose:
     - "8000"
   links:
     - postgres:postgres
     - redis:redis
   env_file: .env
-  command: /usr/local/bin/gunicorn docker_django.wsgi:application -w 2 -b :8000
+  command: /usr/local/bin/gunicorn proqodpy.wsgi:application -w 2 -b :8000 --reload
 
 nginx:
   restart: always
@@ -41,3 +41,7 @@ data:
   volumes:
     - /var/lib/postgresql
   command: "true"
+
+r-base:
+  restart: always
+  image: r-base:latest
