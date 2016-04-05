@@ -1,4 +1,4 @@
-web:
+api:
   restart: always
   build: ./proqodpy
   expose:
@@ -9,6 +9,13 @@ web:
   env_file: .env
   command: /usr/local/bin/gunicorn proqodpy.wsgi:application -w 2 -b :8000 --reload
 
+front:
+  restart: always
+  build: ./frontend
+  expose:
+    - "9000"
+  command: harp server .
+
 nginx:
   restart: always
   build: ./nginx/
@@ -17,9 +24,11 @@ nginx:
   volumes:
     - /www/static
   volumes_from:
-    - web
+    - front
+    - api
   links:
-    - web:web
+    - front:front
+    - api:api
 
 postgres:
   restart: always
@@ -42,6 +51,6 @@ data:
     - /var/lib/postgresql
   command: "true"
 
-r-base:
-  restart: always
-  image: r-base:latest
+# r-base:
+#   restart: always
+#   image: r-base:latest
