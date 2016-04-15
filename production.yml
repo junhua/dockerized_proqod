@@ -1,3 +1,23 @@
+api:
+  restart: always
+  build: ./proqodpy
+  expose:
+    - "8000"
+  links:
+    - postgres:postgres
+    - redis:redis
+  env_file: .env
+  command: /usr/local/bin/gunicorn proqodpy.wsgi:application -w 2 -b :8000 --reload
+
+front:
+  restart: always
+  build: ./frontend
+  links:
+    - api:api
+  expose:
+    - "9000"
+  command: NODE_ENV=production harp server -p 9000 .
+
 nginx:
   restart: always
   build: ./nginx/
@@ -37,20 +57,3 @@ data:
 #   restart: always
 #   image: r-base:latest
 
-api:
-  restart: always
-  build: ./proqodpy
-  expose:
-    - "8000"
-  links:
-    - postgres:postgres
-    - redis:redis
-  env_file: .env
-  command: /usr/local/bin/gunicorn proqodpy.wsgi:application -w 2 -b :8000 --reload
-
-front:
-  restart: always
-  build: ./frontend
-  expose:
-    - "9000"
-  command: harp server -p 9000 .

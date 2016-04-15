@@ -1,4 +1,3 @@
-docker-compose stop
 eval "$(docker-machine env qodlab)"
 docker-compose build
 docker-compose -f production.yml up -d
